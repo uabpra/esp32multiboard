@@ -1,0 +1,69 @@
+esphome:
+  name: logger
+  friendly_name: logger
+
+esp32:
+  board: esp32-c3-devkitm-1
+  framework:
+    type: arduino
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "Your API key"
+
+ota:
+  - platform: esphome
+    password: "Your password"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Logger Fallback Hotspot"
+    password: "kDjY8ekAV2ET"
+
+captive_portal:
+
+# One wire port for multiboard 1.0
+one_wire:
+  - platform: gpio
+    pin: GPIO10
+  # update_interval: 30s
+
+# Individual sensors, update with your sensors address
+# Below is example
+
+sensor:
+  - platform: dallas_temp
+    address:  0xc700000085587628 
+    name: "Ute temp"
+ 
+  - platform: dallas_temp
+    address:  0xc800000085a49e28 
+    name: "Inne temp"
+
+  - platform: dallas_temp
+    address:  0x5200000085776528
+    name: "Inne temp2"
+
+  - platform: dallas_temp
+    address:  0xd500000085a6db28
+    name: "Ute temp2"
+
+# Test button for driving MOSFET loads, connected to GPIO02 on multiboard.
+
+switch:
+  - platform: gpio
+    pin: GPIO02
+    id: Fetctrl
+    name: "Fetctrl"
+    icon: "mdi:gate"
+
+web_server:
+    port: 80
